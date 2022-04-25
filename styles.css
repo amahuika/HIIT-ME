@@ -6,6 +6,10 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  overscroll-behavior: contain;
+}
+
 .timerBtnDiv {
   display: flex;
   justify-content: space-evenly;
@@ -13,7 +17,6 @@ html {
   height: 20vh;
   border-style: solid;
   border-color: rgb(120, 105, 105);
-  border-radius: 0.5rem;
 
   /* From https://css.glass */
   background: rgba(0, 0, 0, 0.59);
@@ -31,12 +34,12 @@ html {
 
 .workoutDisplay {
   display: flex;
-  height: 30vh;
+  height: 20vh;
   justify-content: center;
   align-items: center;
   border-style: solid;
   border-color: rgb(120, 105, 105);
-  border-radius: 0.5rem;
+
   margin-top: 0.3rem;
   font-size: 3rem;
 
@@ -57,7 +60,7 @@ html {
   background-position: center;
   background-size: cover;
   position: absolute;
-  height: 100vh;
+  /* height: 100vh; */
   top: 0;
   left: 0;
   width: 100%;
@@ -93,7 +96,7 @@ html {
 .exerciseMain {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
-  height: 60vh;
+  height: 45vh;
   /* padding: 0; */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
@@ -111,3 +114,33 @@ html {
 .exerciseMain::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
+
+/* @media only screen and (max-width: 600px) {
+  .backgroundImg {
+    height: 108vh;
+  }
+} */
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 300px) {
+  .backgroundImg {
+    height: 124vh;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .backgroundImg {
+    height: 115vh;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+/* @media only screen and (min-width: 768px) {
+  ...;
+} */
+
+/* Large devices (laptops/desktops, 992px and up) */
+/* @media only screen and (min-width: 992px) { */
+/* ...;
+} */

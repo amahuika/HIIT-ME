@@ -31,7 +31,6 @@ const exercises = {
     "Shoulder Press",
     "Plank Rotations",
     "Diamond Push Ups",
-    "Handstand Wall Walk",
   ],
   legs: [
     "Squats",
@@ -118,6 +117,7 @@ btn25min.addEventListener("click", () => {
 
   //   Get array of all div for each workout
   workoutDisplay = [...document.querySelectorAll(".workoutDisplay")];
+  workoutDisplay[0].setAttribute("id", "top");
 });
 
 // PLay button /////////////////////////////////
@@ -125,15 +125,22 @@ let isPaused = false;
 let countdown;
 let timer = 0;
 
-playBtn.addEventListener("click", () => {
+playBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  document.querySelector("#top").scrollIntoView({
+    behavior: "smooth",
+  });
   if (isPaused) {
     clearInterval(countdown);
     playBtn.innerHTML = "Play";
     isPaused = false;
   } else {
-    timerCount();
-    playBtn.innerHTML = "Pause";
-    isPaused = true;
+    audioBeep.play();
+    setTimeout(() => {
+      timerCount();
+      playBtn.innerHTML = "Pause";
+      isPaused = true;
+    }, 3000);
   }
 
   workoutDisplay[0].style.borderColor = "#66ff00";
@@ -155,6 +162,7 @@ function timerCount() {
       workoutDisplay[0].remove();
       workoutDisplay.shift();
       exerciseOrder.shift();
+      workoutDisplay[0].setAttribute("id", "top");
 
       if (workoutDisplay.length === 0) {
         clearInterval(countdown);
