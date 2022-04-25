@@ -171,11 +171,8 @@ function timerCount() {
       workoutDisplay[0].remove();
       workoutDisplay.shift();
       exerciseOrder.shift();
-<<<<<<< HEAD
       clearInterval(countdown);
-=======
-      
->>>>>>> 04e171149ca34034f88bb86346da465664bb6b4c
+
       if (workoutDisplay.length === 0) {
         resetPage();
         congratDiv.classList.remove("d-none");
@@ -186,14 +183,12 @@ function timerCount() {
         showTimer(exerciseOrder[0]);
         timerCount();
       }
-<<<<<<< HEAD
-=======
+
       workoutDisplay[0].setAttribute("id", "top");
       workoutDisplay[0].style.borderColor = "#66ff00";
       showTimer(exerciseOrder[0]);
       clearInterval(countdown);
       timerCount();
->>>>>>> 04e171149ca34034f88bb86346da465664bb6b4c
     }
   }, 1000);
 }
