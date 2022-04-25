@@ -62,15 +62,24 @@ const exercises = {
 
 btn25min.addEventListener("click", () => {
   // amount of exercises for each category
-  const amount = 2;
+  // lengthInput.value ? lengthInput.value : 25;
+  const amount = lengthInput.value > 30 ? 3 : 2;
+
+  let armsCloneArr = [...exercises.arms];
+  let legsCloneArr = [...exercises.legs];
+  let fullCloneArr = [...exercises.fullBody];
+  let absCloneArr = [...exercises.abs];
 
   // get exercises
+
   for (let i = 0; i < amount; i++) {
-    exerciseList.push(randomExercise(exercises.arms));
-    exerciseList.push(randomExercise(exercises.legs));
-    exerciseList.push(randomExercise(exercises.fullBody));
-    exerciseList.push(randomExercise(exercises.abs));
+    randomExercise(armsCloneArr);
+    randomExercise(legsCloneArr);
+    randomExercise(fullCloneArr);
+    randomExercise(absCloneArr);
   }
+
+  console.log(exerciseList);
 
   // set default length of 25min if input is empty
   let lengthMin = lengthInput.value ? lengthInput.value : 25;
@@ -95,6 +104,8 @@ btn25min.addEventListener("click", () => {
   }
 
   // remove last break of array and minus the 20 sec for that break
+  exerciseOrder.unshift("Get Ready");
+  totalSeconds += 5;
   exerciseOrder.pop();
   totalSeconds -= 20;
 
@@ -121,7 +132,8 @@ btn25min.addEventListener("click", () => {
 });
 
 // PLay button /////////////////////////////////
-let isPaused = false;
+
+let isPlaying = false;
 let countdown;
 let timer = 0;
 
@@ -130,17 +142,14 @@ playBtn.addEventListener("click", (e) => {
   document.querySelector("#top").scrollIntoView({
     behavior: "smooth",
   });
-  if (isPaused) {
+  if (isPlaying) {
     clearInterval(countdown);
     playBtn.innerHTML = "Play";
-    isPaused = false;
-  } else {
-    audioBeep.play();
-    setTimeout(() => {
-      timerCount();
-      playBtn.innerHTML = "Pause";
-      isPaused = true;
-    }, 3000);
+    isPlaying = false;
+  } else if (!isPlaying) {
+    timerCount();
+    playBtn.innerHTML = "Pause";
+    isPlaying = true;
   }
 
   workoutDisplay[0].style.borderColor = "#66ff00";
@@ -162,22 +171,18 @@ function timerCount() {
       workoutDisplay[0].remove();
       workoutDisplay.shift();
       exerciseOrder.shift();
-      workoutDisplay[0].setAttribute("id", "top");
+      clearInterval(countdown);
 
       if (workoutDisplay.length === 0) {
-        clearInterval(countdown);
-        timerBtnDiv.classList.add("d-none");
-        timeRemainderDiv.classList.add("d-none");
-        mainBtn.classList.remove("d-none");
+        resetPage();
         congratDiv.classList.remove("d-none");
         document.querySelector(".totalTime").textContent = totalTime;
-        lengthInput.value = "";
+      } else {
+        workoutDisplay[0].setAttribute("id", "top");
+        workoutDisplay[0].style.borderColor = "#66ff00";
+        showTimer(exerciseOrder[0]);
+        timerCount();
       }
-
-      workoutDisplay[0].style.borderColor = "#66ff00";
-      showTimer(exerciseOrder[0]);
-      clearInterval(countdown);
-      timerCount();
     }
   }, 1000);
 }
@@ -192,17 +197,8 @@ stopBtn.addEventListener("click", () => {
   // Reset elements and variables
   if (stop) {
     workoutDisplay.forEach((val) => val.remove());
-    workoutDisplay = [];
-    exerciseList = [];
-    exerciseOrder = [];
-    timer = 0;
-    totalSeconds = 0;
-    isPaused = false;
+    resetPage();
     clearInterval(countdown);
-    playBtn.innerHTML = "Play";
-    mainBtn.classList.remove("d-none");
-    timerBtnDiv.classList.add("d-none");
-    timeRemainderDiv.classList.add("d-none");
   }
 });
 
@@ -213,6 +209,8 @@ function showTimer(exercise) {
     timer = 10;
   } else if (exercise === "Break") {
     timer = 20;
+  } else if (exercise === "Get Ready") {
+    timer = 5;
   } else {
     timer = 25;
   }
@@ -220,10 +218,11 @@ function showTimer(exercise) {
   timerDiv.textContent = `${timer.toString().padStart(2, 0)} Sec`;
 }
 
-// Random num function
-function randomExercise(bodyPart) {
-  const randNum = Math.trunc(Math.random() * bodyPart.length);
-  return bodyPart[randNum];
+// Random exercise function
+function randomExercise(bodyPartArr) {
+  let index = Math.floor(Math.random() * bodyPartArr.length);
+  exerciseList.push(bodyPartArr[index]);
+  bodyPartArr.splice(index, 1);
 }
 
 // Create div function
@@ -246,6 +245,19 @@ function displayTimeRemaining(totalSeconds) {
     .padStart(2, 0)}`;
 }
 
+function resetPage() {
+  timerBtnDiv.classList.add("d-none");
+  timeRemainderDiv.classList.add("d-none");
+  mainBtn.classList.remove("d-none");
+  lengthInput.value = "";
+  playBtn.innerHTML = "Play";
+  workoutDisplay = [];
+  exerciseList = [];
+  exerciseOrder = [];
+  timer = 0;
+  totalSeconds = 0;
+  isPaused = false;
+}
 //  Scroll to top button
 
 // const topBtn = document.querySelector(".topBtn");
