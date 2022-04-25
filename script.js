@@ -162,7 +162,7 @@ function timerCount() {
       workoutDisplay[0].remove();
       workoutDisplay.shift();
       exerciseOrder.shift();
-      workoutDisplay[0].setAttribute("id", "top");
+      
 
       if (workoutDisplay.length === 0) {
         clearInterval(countdown);
@@ -174,6 +174,7 @@ function timerCount() {
         lengthInput.value = "";
       }
 
+      workoutDisplay[0].setAttribute("id", "top");
       workoutDisplay[0].style.borderColor = "#66ff00";
       showTimer(exerciseOrder[0]);
       clearInterval(countdown);
