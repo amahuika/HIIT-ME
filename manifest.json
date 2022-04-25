@@ -1,0 +1,27 @@
+{
+  "name": "HIIT ME",
+  "short_name": "HIITME",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#343a40",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/icons8-biceps-32.png",
+      "type": "/image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "/icons/icons8-biceps-64.png",
+      "type": "/image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "/icons/icons8-biceps-144.png",
+      "type": "/image/png",
+      "sizes": "144x144"
+    }
+  ]
+}

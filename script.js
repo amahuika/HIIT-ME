@@ -1,0 +1,245 @@
+// set dom element variables
+const btn25min = document.querySelector("#generate25");
+const exerciseDiv = document.querySelector(".exerciseMain");
+const timerDiv = document.querySelector(".timer");
+const timerBtnDiv = document.querySelector(".timerBtnDiv");
+const playBtn = document.querySelector(".playBtn");
+const stopBtn = document.querySelector(".stopBtn");
+const mainBtn = document.querySelector(".mainBtn");
+const lengthInput = document.querySelector("#length");
+const timeRemainderDiv = document.querySelector(".timeRemainderDiv");
+const timeRemaining = document.querySelector(".timeRemaining");
+const congratDiv = document.querySelector(".congratulations");
+const restDiv = document.querySelector("rest");
+
+// set variables
+let audioBeep = new Audio("audio/beeps.wav");
+let totalSeconds = 0;
+let toMinutes, seconds, lengthMin, totalTime;
+
+// set empty arrays
+let exerciseList = [];
+let exerciseOrder = [];
+let workoutDisplay = [];
+
+// exercise object
+const exercises = {
+  arms: [
+    "Push Ups",
+    "Tricep Dips",
+    "Commandos",
+    "Shoulder Press",
+    "Plank Rotations",
+    "Diamond Push Ups",
+    "Handstand Wall Walk",
+  ],
+  legs: [
+    "Squats",
+    "Lunges",
+    "Ski Jumps",
+    "Jump Squats",
+    "Jump Lunges",
+    "Curtsy Lunges",
+  ],
+  abs: [
+    "Flutter Kicks",
+    "Diamond Situps",
+    "Leg Raises",
+    "Bicycle",
+    "Crunches",
+    "Star Plank",
+  ],
+  fullBody: [
+    "Burpees",
+    "Mountain Climbers",
+    "Jumping Jacks",
+    "Inch Worms",
+    "Shoot Through",
+    "Bear Crawls",
+  ],
+};
+
+// Generate button click ////////////////////////////////////////////
+
+btn25min.addEventListener("click", () => {
+  // amount of exercises for each category
+  const amount = 2;
+
+  // get exercises
+  for (let i = 0; i < amount; i++) {
+    exerciseList.push(randomExercise(exercises.arms));
+    exerciseList.push(randomExercise(exercises.legs));
+    exerciseList.push(randomExercise(exercises.fullBody));
+    exerciseList.push(randomExercise(exercises.abs));
+  }
+
+  // set default length of 25min if input is empty
+  let lengthMin = lengthInput.value ? lengthInput.value : 25;
+
+  // create exercise order
+  while (totalSeconds / 60 < lengthMin) {
+    for (let i = 0; i < exerciseList.length; i++) {
+      if (totalSeconds / 60 < lengthMin) {
+        exerciseOrder.push(exerciseList[i]);
+        exerciseOrder.push("Rest");
+        exerciseOrder.push(exerciseList[i]);
+        exerciseOrder.push("Rest");
+        exerciseOrder.push(exerciseList[i]);
+        exerciseOrder.push("Break");
+
+        // add each exercise length and breaks in seconds
+        totalSeconds += 25 + 10 + 25 + 10 + 25 + 20;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // remove last break of array and minus the 20 sec for that break
+  exerciseOrder.pop();
+  totalSeconds -= 20;
+
+  // add the array to the screen in multiple div
+
+  for (const el of exerciseOrder) {
+    createDiv(el);
+  }
+
+  // add a timer to the screen show play button
+  let showTotalTime = displayTimeRemaining(totalSeconds);
+  showTimer(exerciseOrder[0]);
+  timeRemaining.textContent = showTotalTime;
+
+  totalTime = showTotalTime;
+  congratDiv.classList.add("d-none");
+  timerBtnDiv.classList.remove("d-none");
+  timeRemainderDiv.classList.remove("d-none");
+  mainBtn.classList.add("d-none");
+
+  //   Get array of all div for each workout
+  workoutDisplay = [...document.querySelectorAll(".workoutDisplay")];
+});
+
+// PLay button /////////////////////////////////
+let isPaused = false;
+let countdown;
+let timer = 0;
+
+playBtn.addEventListener("click", () => {
+  if (isPaused) {
+    clearInterval(countdown);
+    playBtn.innerHTML = "Play";
+    isPaused = false;
+  } else {
+    timerCount();
+    playBtn.innerHTML = "Pause";
+    isPaused = true;
+  }
+
+  workoutDisplay[0].style.borderColor = "#66ff00";
+});
+
+// Timer function
+function timerCount() {
+  countdown = setInterval(() => {
+    timer--;
+    timerDiv.textContent = `${timer.toString().padStart(2, 0)} Sec`;
+
+    totalSeconds--;
+    timeRemaining.textContent = displayTimeRemaining(totalSeconds);
+
+    if (timer === 4) {
+      audioBeep.play();
+    }
+    if (timer <= 0) {
+      workoutDisplay[0].remove();
+      workoutDisplay.shift();
+      exerciseOrder.shift();
+
+      if (workoutDisplay.length === 0) {
+        clearInterval(countdown);
+        timerBtnDiv.classList.add("d-none");
+        timeRemainderDiv.classList.add("d-none");
+        mainBtn.classList.remove("d-none");
+        congratDiv.classList.remove("d-none");
+        document.querySelector(".totalTime").textContent = totalTime;
+        lengthInput.value = "";
+      }
+
+      workoutDisplay[0].style.borderColor = "#66ff00";
+      showTimer(exerciseOrder[0]);
+      clearInterval(countdown);
+      timerCount();
+    }
+  }, 1000);
+}
+
+// Stop button //////////////////////////
+
+stopBtn.addEventListener("click", () => {
+  const stop = confirm(
+    `Are you sure you want to stop the timer? \nThis will remove current workout`
+  );
+
+  // Reset elements and variables
+  if (stop) {
+    workoutDisplay.forEach((val) => val.remove());
+    workoutDisplay = [];
+    exerciseList = [];
+    exerciseOrder = [];
+    timer = 0;
+    totalSeconds = 0;
+    isPaused = false;
+    clearInterval(countdown);
+    playBtn.innerHTML = "Play";
+    mainBtn.classList.remove("d-none");
+    timerBtnDiv.classList.add("d-none");
+    timeRemainderDiv.classList.add("d-none");
+  }
+});
+
+// functions /////////////////////////
+// show timer function
+function showTimer(exercise) {
+  if (exercise === "Rest") {
+    timer = 10;
+  } else if (exercise === "Break") {
+    timer = 20;
+  } else {
+    timer = 25;
+  }
+
+  timerDiv.textContent = `${timer.toString().padStart(2, 0)} Sec`;
+}
+
+// Random num function
+function randomExercise(bodyPart) {
+  const randNum = Math.trunc(Math.random() * bodyPart.length);
+  return bodyPart[randNum];
+}
+
+// Create div function
+function createDiv(name) {
+  const text = document.createTextNode(`${name}`);
+  const newDiv = document.createElement("div");
+
+  newDiv.classList.add("workoutDisplay");
+  newDiv.appendChild(text);
+  exerciseDiv.appendChild(newDiv);
+}
+
+//display total time remaining
+function displayTimeRemaining(totalSeconds) {
+  toMinutes = Math.floor(totalSeconds / 60);
+  seconds = totalSeconds % 60;
+
+  return `${toMinutes.toString().padStart(2, 0)}:${seconds
+    .toString()
+    .padStart(2, 0)}`;
+}
+
+//  Scroll to top button
+
+// const topBtn = document.querySelector(".topBtn");
+
+// topBtn.addEventListener("click");
