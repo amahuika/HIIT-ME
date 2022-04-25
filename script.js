@@ -176,7 +176,6 @@ function timerCount() {
 =======
       
 >>>>>>> 04e171149ca34034f88bb86346da465664bb6b4c
-
       if (workoutDisplay.length === 0) {
         resetPage();
         congratDiv.classList.remove("d-none");
@@ -189,7 +188,6 @@ function timerCount() {
       }
 <<<<<<< HEAD
 =======
-
       workoutDisplay[0].setAttribute("id", "top");
       workoutDisplay[0].style.borderColor = "#66ff00";
       showTimer(exerciseOrder[0]);
