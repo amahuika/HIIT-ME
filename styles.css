@@ -60,7 +60,7 @@ body {
   background-position: center;
   background-size: cover;
   position: absolute;
-  height: 100vh;
+  height: 110vh;
   top: 0;
   left: 0;
   width: 100%;
@@ -114,33 +114,3 @@ body {
 .exerciseMain::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
-
-/* @media only screen and (max-width: 600px) {
-  .backgroundImg {
-    height: 108vh;
-  }
-} */
-
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 300px) {
-  .backgroundImg {
-    height: 124vh;
-  }
-}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  .backgroundImg {
-    height: 115vh;
-  }
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-/* @media only screen and (min-width: 768px) {
-  ...;
-} */
-
-/* Large devices (laptops/desktops, 992px and up) */
-/* @media only screen and (min-width: 992px) { */
-/* ...;
-} */
