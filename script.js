@@ -62,7 +62,6 @@ const exercises = {
 
 btn25min.addEventListener("click", () => {
   // amount of exercises for each category
-  // lengthInput.value ? lengthInput.value : 25;
   const amount = lengthInput.value > 30 ? 3 : 2;
 
   let armsCloneArr = [...exercises.arms];
@@ -78,8 +77,6 @@ btn25min.addEventListener("click", () => {
     randomExercise(fullCloneArr);
     randomExercise(absCloneArr);
   }
-
-  console.log(exerciseList);
 
   // set default length of 25min if input is empty
   let lengthMin = lengthInput.value ? lengthInput.value : 25;
@@ -110,7 +107,6 @@ btn25min.addEventListener("click", () => {
   totalSeconds -= 20;
 
   // add the array to the screen in multiple div
-
   for (const el of exerciseOrder) {
     createDiv(el);
   }
@@ -262,10 +258,5 @@ function resetPage() {
   exerciseOrder = [];
   timer = 0;
   totalSeconds = 0;
-  isPaused = false;
+  isPlaying = false;
 }
-//  Scroll to top button
-
-// const topBtn = document.querySelector(".topBtn");
-
-// topBtn.addEventListener("click");
