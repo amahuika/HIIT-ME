@@ -98,7 +98,7 @@ body {
 .exerciseMain {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
-  height: 45vh;
+  height: 69vh;
   /* padding: 0; */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
